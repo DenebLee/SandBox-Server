@@ -9,6 +9,15 @@ import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+/**
+ * SandBox Server 만들기
+ *
+ * @author Lee_jeong_seob
+ * @project nanoit-server
+ * @update 2022-05-09
+ */
+
 public class SimpleHTTPServer {
 
     private static final Logger LOGGER = Logger.getLogger("SimpleHTTPServer");
@@ -44,6 +53,7 @@ public class SimpleHTTPServer {
             LOGGER.info("Accepting connections on port " + server.getLocalPort());
             LOGGER.info("Data to be sent:");
             LOGGER.info(new String(this.content, encoding));
+            //
 
 
             while (true) {
@@ -84,19 +94,19 @@ public class SimpleHTTPServer {
                 StringBuilder request = new StringBuilder();
                 while (true) {
                     String str = br.readLine();
-                    if (str.equals("")) break; // 16-2. 빈줄이 포함되었으면 while문 벗어남 -> empty line
+                    if (str.equals("")) break; // 16-2. 빈줄이 포함되었으면 while 문 벗어남 -> empty line
                     request.append(str + "\n"); // 16-3. 읽는 족족 request 헤더에 추가중
                 }
                 // 17. 브라우저(사용자)가 보낸 request 헤더 출력
                 // GET / HTTP/1.1
-                //     └─▶ /: 우리 서버는 localhost/ddd.aaaa 해도 무조건 test.html만 보내주게 되어있음 --> Run Configuration에서 설정해둠
+                //     └─▶ /: 서버는 localhost/ddd.aaaa 해도 무조건 test.html만 보내주게 되어있음 --> Run Configuration에서 설정해둠
                 System.out.println("요청헤더:\n" + request.toString());
 
                 // HTTP/1.0 이나 그 이후의 버전을 지원할 경우 MIME 헤더를 전송한다.
                 if (request.toString().indexOf("HTTP/") != -1) {
                     os.write(header);
                     // GET / HTTP/1.1
-                    //     └─▶ /: 우리 서버는 localhost/ddd.aaaa 해도 무조건 test.html만 보내주게 되어있음
+                    //     └─▶ /: 서버는 localhost/ddd.aaaa 해도 무조건 test.html만 보내주게 되어있음
                 }
                 System.out.println("응답헤더:\n" + new String(header));
 
