@@ -2,12 +2,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.*;
 
 class Client_for_Test {
+
+    String returnData = "";
 
     @Test
     @DisplayName("Server Test")
@@ -36,6 +37,40 @@ class Client_for_Test {
 
             }
             System.out.println("클라이언트 프로그램 실행 중: ");
+        }
+    }
+
+    @Test
+    @DisplayName("Server Test")
+    void HttpClient_Test() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8888");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+
+            conn.connect();
+            System.out.println("[HTTP 요청 방식] : " + "POST");
+            System.out.println("[HTTP 요청 주소] : " + url);
+
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuffer sb = new StringBuffer();
+
+            returnData = sb.toString();
+            String responseData = "";
+
+            while ((responseData = br.readLine()) != null) {
+                sb.append(responseData); //StringBuffer에 응답받은 데이터 순차적으로 저장 실시
+            }
+            returnData = sb.toString();
+
+            //http 요청 응답 코드 확인 실시
+            String responseCode = String.valueOf(conn.getResponseCode());
+            System.out.println("[http 응답 코드] : " + responseCode);
+            System.out.println("[http 응답 데이터] : " + returnData);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
