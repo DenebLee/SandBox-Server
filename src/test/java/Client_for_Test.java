@@ -11,7 +11,7 @@ class Client_for_Test {
     String returnData = "";
 
     @Test
-    @DisplayName("Server Test")
+    @DisplayName("server Test")
         // 첫 번째 파라미터 : 접속할려는 상대편 프로그램의 컴퓨터 주소
 
     void TestClient() {
@@ -39,15 +39,14 @@ class Client_for_Test {
             System.out.println("클라이언트 프로그램 실행 중: ");
         }
     }
-
+    
     @Test
-    @DisplayName("Server Test")
+    @DisplayName("HttpServer Test")
     void HttpClient_Test() throws IOException {
         try {
-            URL url = new URL("http://localhost:8888");
+            URL url = new URL("http://localhost:3000?id=3fefefe");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            conn.setRequestMethod("POST");
 
             conn.connect();
             System.out.println("[HTTP 요청 방식] : " + "POST");

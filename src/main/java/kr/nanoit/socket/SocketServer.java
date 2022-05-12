@@ -1,11 +1,11 @@
-package kr.nanoit;
+package kr.nanoit.socket;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class SocketServer {
 
     public static void main(String[] args) {
 

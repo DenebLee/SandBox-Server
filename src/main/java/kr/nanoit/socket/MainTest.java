@@ -1,4 +1,4 @@
-package kr.nanoit;
+package kr.nanoit.socket;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
