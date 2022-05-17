@@ -44,7 +44,7 @@ class Client_for_Test {
     @DisplayName("HttpServer Test")
     void HttpClient_Test() throws IOException {
         try {
-            URL url = new URL("http://localhost:3000?id=3fefefe");
+            URL url = new URL("http://localhost:3000?id=1231423&pw=123123");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 
