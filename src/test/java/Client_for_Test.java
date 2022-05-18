@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 class Client_for_Test {
 
@@ -19,9 +21,16 @@ class Client_for_Test {
         try {
             //>java Client1 172.16.83.100
             socket = new Socket();
-            SocketAddress address = new InetSocketAddress(8888);
+            SocketAddress address = new InetSocketAddress(9001);
             socket.connect(address);
             System.out.println("[접속] 서버 :" + socket.getInetAddress().getHostAddress());
+            OutputStream os = socket.getOutputStream();
+
+            String Str = "테스트 중입니다 서버야 ";
+            byte[] data = Str.getBytes(StandardCharsets.UTF_8);
+            os.write(data);
+            System.out.println(data);
+            System.out.println("서버에 보낸 데이터" + Str);
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String line = reader.readLine();
             String[] movie = line.split("/");
@@ -44,7 +53,7 @@ class Client_for_Test {
     @DisplayName("HttpServer Test")
     void HttpClient_Test() throws IOException {
         try {
-            URL url = new URL("http://localhost:3000?id=1231423&pw=123123");
+            URL url = new URL("http://localhost:3000?id=123123&pw=123123");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 
