@@ -53,6 +53,7 @@ class TcpServerTest {
 
         assertTrue(packet.getHeader().getType().equals("SMS"));
         assertTrue(packet.getHeader().getBodySize() == 20);
+
         assertTrue(packet.getBody().getBody().equals("BODYYYYYY"));
     }
 

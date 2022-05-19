@@ -1,3 +1,5 @@
+package kr.nanoit.socket;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +33,7 @@ class Client_for_Test {
             os.write(data);
             System.out.println(data);
             System.out.println("서버에 보낸 데이터" + Str);
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String line = reader.readLine();
             String[] movie = line.split("/");
@@ -80,5 +83,18 @@ class Client_for_Test {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    @Test
+    @DisplayName("HttpServer Test")
+    void connect_http() throws IOException {
+        URL url = new URL("http://localhost:3000?id=123123&pw=123123");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.connect();
+        System.out.println("연결성공");
+
     }
 }
+

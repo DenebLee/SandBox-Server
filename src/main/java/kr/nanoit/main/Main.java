@@ -28,7 +28,6 @@ public class Main {
             nanoItHttpServer.start();
 
             LinkedBlockingQueue<Packet> readStream = new LinkedBlockingQueue<>();
-
             TcpServer tcpServer = new TcpServer(readStream, 9001);
             Thread thread = new Thread(tcpServer);
             thread.start();

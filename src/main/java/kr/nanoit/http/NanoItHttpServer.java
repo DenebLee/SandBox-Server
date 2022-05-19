@@ -10,6 +10,7 @@ public class NanoItHttpServer {
 
     public NanoItHttpServer(String host, int port) throws IOException {
         this.httpServer = HttpServer.create(new InetSocketAddress(host, port), 0);
+        httpServer.createContext("/", new RootHandler());
     }
 
     public void start() {

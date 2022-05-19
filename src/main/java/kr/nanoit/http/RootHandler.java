@@ -3,6 +3,7 @@ package kr.nanoit.http;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import kr.nanoit.config.Verification;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -29,45 +30,28 @@ public class RootHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         OutputStream respBody = exchange.getResponseBody();
-        String id_check = "123123";
+        StringBuilder sb = new StringBuilder();
+
         try {
-            System.out.println(exchange.getRequestURI());
+            log.info("Addresses accessed by clients", exchange.getLocalAddress());
             Map<String, String> result = getQueryParameters(exchange.getRequestURI().getQuery());
+            log.warn(String.valueOf(respBody));
             String id = result.get("id");
             String pw = result.get("pw");
-            System.out.println(id);
-            System.out.println(pw);
+            log.info("id : {} pw : {} " + id , pw);
 
-            StringBuilder sb = new StringBuilder();
-
-            try {
-                if (id.equals(id_check)) {
-                    sb.append("<ServerInfo>");
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append("  <IP>192.168.0.1</IP>");
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append("  <Port>9001</Port>");
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append("</ServerInfo>");
-                } else if (!id.equals(id_check)) {
-                    sb.append("The requested ID and password do not match");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Verification vf = new Verification(id, pw,sb);
+            vf.Verification_PW();
 
             byte[] body = sb.toString().getBytes(StandardCharsets.UTF_8);
-
             Headers headers = exchange.getResponseHeaders();
             headers.add("Content-Type", "application/xml");
-            System.out.println();
-            System.out.println();
-            System.out.println(new String(body));
             exchange.getRequestURI();
 
             exchange.sendResponseHeaders(200, body.length);
             respBody.write(body);
             respBody.close();
+
         } catch (IOException e) {
             e.printStackTrace();
 
