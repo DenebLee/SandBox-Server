@@ -3,7 +3,7 @@ package kr.nanoit.http;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import kr.nanoit.config.Verification;
+import kr.nanoit.config.Validation;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -15,11 +15,11 @@ import java.util.Map;
 /**
  * Stringbuiler는 String과 문자열을 더할 때 새로운 객체를 생성하는 것이 아니라 기존의 데이터에 더하는 방식을
  * 사용하기 때문에 속도도 빠르고 부하가 적다
- *
+ * <p>
  * 여기 부분에 클라이언트가 요청한 쿼리스트링에 암호화된 비번과 아이디가 일치한다면 respBody에 xml형식으로
  * socket연결 할 엔드포인트 제공
  * 아닐 시 접속 종료
- *
+ * <p>
  * response에는 헤더값과 바디값
  * 헤더값은 서버에서 설정한 자릿수에 맞춰 작성후 클라이언트가 요청한 리퀘스트에서 자리값이 틀릴 시 연결종료
  * 버퍼 리더에 데이터가 쌓이면 한줄씩 빼야된다
@@ -38,10 +38,10 @@ public class RootHandler implements HttpHandler {
             log.warn(String.valueOf(respBody));
             String id = result.get("id");
             String pw = result.get("pw");
-            log.info("id : {} pw : {} " + id , pw);
+            log.info("id : {} pw : {} " + id, pw);
 
-            Verification vf = new Verification(id, pw,sb);
-            vf.Verification_PW();
+            Validation validation = new Validation(id,pw);
+            validation.ValidationValue();
 
             byte[] body = sb.toString().getBytes(StandardCharsets.UTF_8);
             Headers headers = exchange.getResponseHeaders();
