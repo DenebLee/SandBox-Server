@@ -8,7 +8,10 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
@@ -16,7 +19,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 class PropTest {
@@ -81,4 +86,27 @@ class PropTest {
         transformer.transform(source, result);
         System.out.println(new String(out.toByteArray(), StandardCharsets.UTF_8));
     }
-}
+
+    @Test
+    @DisplayName("")
+    void getProperties_value() throws IOException {
+
+        String test1 = "test01";
+        Properties prop = new Properties();
+        String fileName = "NanoitServer.properties";
+        InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
+        prop.load(is);
+        Pattern patt = Pattern.compile(String.valueOf(test1));
+
+        
+
+        for (Map.Entry<Object, Object> each : prop.entrySet()) {
+            final Matcher m = patt.matcher((String) each.getValue());
+            if (m.find()) {
+                System.out.println("값이 일치");
+            }
+        }
+    }
+
+    }
+

@@ -3,12 +3,17 @@ package kr.nanoit.http;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import kr.nanoit.config.Crypt;
 import kr.nanoit.config.Validation;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,23 +32,31 @@ import java.util.Map;
 @Slf4j
 public class RootHandler implements HttpHandler {
 
+    private Validation validation;
+
+    public RootHandler() {
+        this.validation = new Validation();
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         OutputStream respBody = exchange.getResponseBody();
-        StringBuilder sb = new StringBuilder();
 
         try {
-            log.info("Addresses accessed by clients", exchange.getLocalAddress());
+            log.info("Addresses accessed by clients {}", exchange.getLocalAddress());
             Map<String, String> result = getQueryParameters(exchange.getRequestURI().getQuery());
             log.warn(String.valueOf(respBody));
+
             String id = result.get("id");
-            String pw = result.get("pw");
-            log.info("id : {} pw : {} " + id, pw);
+            String password = result.get("password");
+            System.out.println(id + password);
 
-            Validation validation = new Validation(id,pw);
-            validation.ValidationValue();
+            Crypt crypt = new Crypt();
+            password = new String(crypt.deCrypt(password));
+            log.info("복호화된 비밀번호 값 : {}", password);
 
-            byte[] body = sb.toString().getBytes(StandardCharsets.UTF_8);
+
+            byte[] body = validation.validationValue(id, password).getBytes(StandardCharsets.UTF_8);
             Headers headers = exchange.getResponseHeaders();
             headers.add("Content-Type", "application/xml");
             exchange.getRequestURI();
@@ -58,13 +71,21 @@ public class RootHandler implements HttpHandler {
             if (respBody != null) {
                 respBody.close();
             }
+        } catch (InvalidAlgorithmParameterException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
         } finally {
             exchange.close();
         }
     }
 
     public Map<String, String> getQueryParameters(String query) {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         for (String param : query.split("&")) {
             String pair[] = param.split("=");
             if (pair.length > 1) {

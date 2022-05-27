@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
 /**
  * 클라이언트가 http통신으로 서버에 아이디와 비번을 통해 xml을 요청하면 서버는 해당 요청 쿼리스트링을 검증후 xml을 보냄
  * xml을 파싱해서 소켓 접속 엔드포이트를 얻은 클라이언트는 서버와 socket연결을 시도
@@ -20,11 +21,18 @@ public class Main {
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
 
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) {
         try {
             log.info("{}", String.format("[%s][HTTP SERVER][START]", SIMPLE_DATE_FORMAT.format(new Date())));
 
-            NanoItHttpServer nanoItHttpServer = new NanoItHttpServer("0.0.0.0", 3000);
+//            for (int i = 1; i <= count; i++) {
+//                String id = configuration.get
+//            }
+
+
+
+            NanoItHttpServer nanoItHttpServer = new NanoItHttpServer("0.0.0.0", 9080);
             nanoItHttpServer.start();
 
             LinkedBlockingQueue<Packet> readStream = new LinkedBlockingQueue<>();
