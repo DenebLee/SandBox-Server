@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kr.nanoit.config.Crypt;
 import kr.nanoit.config.Validation;
+import kr.nanoit.config.readProperties;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.BadPaddingException;
@@ -16,6 +17,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Stringbuiler는 String과 문자열을 더할 때 새로운 객체를 생성하는 것이 아니라 기존의 데이터에 더하는 방식을
@@ -49,11 +51,21 @@ public class RootHandler implements HttpHandler {
 
             String id = result.get("id");
             String password = result.get("password");
-            System.out.println(id + password);
+
+            Properties prop = readProperties.read("NanoitServer.properties");
+            String enckey = prop.getProperty("auth.encryptkey.2");
 
             Crypt crypt = new Crypt();
-            password = new String(crypt.deCrypt(password));
-            log.info("복호화된 비밀번호 값 : {}", password);
+            crypt.cryptInit(enckey);
+            if (password != null) {
+                try {
+                    password = new String(crypt.deCrypt(password));
+                    log.info("복호화된 비밀번호 값 : {}", password);
+                } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+                    e.printStackTrace();
+                }
+            }
+
 
 
             byte[] body = validation.validationValue(id, password).getBytes(StandardCharsets.UTF_8);
@@ -71,14 +83,6 @@ public class RootHandler implements HttpHandler {
             if (respBody != null) {
                 respBody.close();
             }
-        } catch (InvalidAlgorithmParameterException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalBlockSizeException e) {
-            throw new RuntimeException(e);
-        } catch (BadPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException(e);
         } finally {
             exchange.close();
         }

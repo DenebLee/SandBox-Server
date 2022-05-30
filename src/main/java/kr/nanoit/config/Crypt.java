@@ -1,5 +1,6 @@
 package kr.nanoit.config;
 
+import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.BadPaddingException;
@@ -10,7 +11,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.util.Base64;
 
 /**
  * The type Crypt.
@@ -122,7 +122,7 @@ public class Crypt {
      * @throws BadPaddingException                the bad padding exception
      */
     public byte[] deCrypt(String data) throws InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-        return decryptAsByte(Base64.getDecoder().decode(data));
+        return decryptAsByte(Base64.decodeBase64(data));
     }
 
     /**

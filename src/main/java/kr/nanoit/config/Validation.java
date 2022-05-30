@@ -29,7 +29,7 @@ public class Validation {
             if (m2.find() ) {
                 ServerInfo serverInfo = new ServerInfo();
                 serverInfo.setPort(prop.getProperty("auth.server.port"));
-                serverInfo.setIp(prop.getProperty("auth.id.1"));
+                serverInfo.setIp(prop.getProperty("auth.id.2"));
                 log.info("아이디, 비밀번호 검증 완료");
                 sb.append("<ServerInfo>");
                 sb.append(System.getProperty("line.separator"));

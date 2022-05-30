@@ -1,5 +1,6 @@
 package kr.nanoit.main;
 
+import kr.nanoit.config.Identify;
 import kr.nanoit.dto.Packet;
 import kr.nanoit.http.NanoItHttpServer;
 import kr.nanoit.socket.TcpServer;
@@ -8,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -20,6 +23,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Main {
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
+    public static Map<String, Identify> identifyMap = new HashMap<>();
 
 
     public static void main(String[] args) {
@@ -29,8 +33,6 @@ public class Main {
 //            for (int i = 1; i <= count; i++) {
 //                String id = configuration.get
 //            }
-
-
 
             NanoItHttpServer nanoItHttpServer = new NanoItHttpServer("0.0.0.0", 9080);
             nanoItHttpServer.start();

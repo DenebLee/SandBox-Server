@@ -23,12 +23,13 @@ class Client_for_Test {
         try {
             //>java Client1 172.16.83.100
             socket = new Socket();
-            SocketAddress address = new InetSocketAddress(9001);
+            SocketAddress address = new InetSocketAddress(9080);
             socket.connect(address);
             System.out.println("[접속] 서버 :" + socket.getInetAddress().getHostAddress());
             OutputStream os = socket.getOutputStream();
 
             String Str = "테스트 중입니다 서버야 ";
+
             byte[] data = Str.getBytes(StandardCharsets.UTF_8);
             os.write(data);
             System.out.println(data);
@@ -56,9 +57,9 @@ class Client_for_Test {
     @DisplayName("HttpServer Test")
     void HttpClient_Test() throws IOException {
         try {
-            URL url = new URL("http://localhost:3000?id=123123&pw=123123");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            URL url = new URL("http://localhost:9080?id=test01&password=4m4jp2e0O6");
 
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.connect();
             System.out.println("[HTTP 요청 방식] : " + "POST");
@@ -90,11 +91,13 @@ class Client_for_Test {
     @Test
     @DisplayName("HttpServer Test")
     void connect_http() throws IOException {
-        URL url = new URL("http://localhost:3000?id=123123&pw=123123");
+        URL url = new URL("http://localhost:3000?id=test01&pw=4m4jp2e0O6");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.connect();
         System.out.println("연결성공");
-
     }
+
+
+
 }
 
