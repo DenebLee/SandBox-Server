@@ -80,11 +80,4 @@ public class SocketHandler implements Runnable {
             socket.close();
         }
     }
-
-    private void fn_testDisplay(byte[] buff, int buff_cnt) {
-        int i;
-        System.out.println("수신데이터: ");
-        for (i = 0; i < 10; i++) System.out.println(String.format("0x%02X", buff[i]));
-        System.out.println("");
-    }
 }

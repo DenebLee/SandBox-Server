@@ -30,15 +30,12 @@ public class Main {
         try {
             log.info("{}", String.format("[%s][HTTP SERVER][START]", SIMPLE_DATE_FORMAT.format(new Date())));
 
-//            for (int i = 1; i <= count; i++) {
-//                String id = configuration.get
-//            }
 
             NanoItHttpServer nanoItHttpServer = new NanoItHttpServer("0.0.0.0", 9080);
             nanoItHttpServer.start();
 
             LinkedBlockingQueue<Packet> readStream = new LinkedBlockingQueue<>();
-            TcpServer tcpServer = new TcpServer(readStream, 9001);
+            TcpServer tcpServer = new TcpServer(readStream, 41410);
             Thread thread = new Thread(tcpServer);
             thread.start();
 

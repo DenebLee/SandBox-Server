@@ -2,6 +2,9 @@ plugins {
     id 'java'
 }
 
+//compile, runtime, testCompile, testRuntime 은 Gradle 4.10 (2018.8.27) 이래로
+//deprecate 되었다.
+
 group 'kr.nanoit'
 version '1.0-SNAPSHOT'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -28,6 +31,9 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.11'
     implementation 'ch.qos.logback:logback-core:1.2.11'
     implementation 'ch.qos.logback:logback-access:1.2.11'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
+    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.13.3'
+
 }
 
 test {
