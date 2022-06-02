@@ -23,7 +23,7 @@ class Client_for_Test {
         try {
             //>java Client1 172.16.83.100
             socket = new Socket();
-            SocketAddress address = new InetSocketAddress(9080);
+            SocketAddress address = new InetSocketAddress(41410);
             socket.connect(address);
             System.out.println("[접속] 서버 :" + socket.getInetAddress().getHostAddress());
             OutputStream os = socket.getOutputStream();

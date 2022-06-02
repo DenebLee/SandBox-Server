@@ -1,6 +1,6 @@
 //package kr.nanoit.config;
 //
-//import com.sun.xml.internal.ws.api.message.Message;
+//import kr.nanoit.socket.CommonSocketUtil;
 //import lombok.extern.slf4j.Slf4j;
 //
 //import java.io.IOException;
@@ -16,8 +16,6 @@
 //    private EncoderMessageService encoderMessageService;
 //
 //    public ServerThreadSend() {
-//
-//
 //    }
 //
 //    @Override
@@ -33,7 +31,9 @@
 //                    }else{
 //                        log.info("[SENDER]  [LOGIN_ACK] ID:{} PW :{} VER : {} error", loginMessageService.getId(), "LOGIN", loginMessageService.getPassword(), loginMessageService.getVersion());
 //                    }
-//                } else if (messageService instanceof A)
+//                } else if (messageService instanceof A){
+//
+//                }
 //            }catch(IOException e){
 //
 //            }
