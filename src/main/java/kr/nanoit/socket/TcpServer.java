@@ -13,6 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Slf4j
 public class TcpServer implements Runnable {
     private final LinkedBlockingQueue<Packet> readStream;
+    private final Object closeLock = new Object();
     private final ServerSocket serverSocket;
     private final Map<String, Thread> threadList;
 
@@ -44,4 +45,5 @@ public class TcpServer implements Runnable {
             thread.interrupt();
         });
     }
+
 }

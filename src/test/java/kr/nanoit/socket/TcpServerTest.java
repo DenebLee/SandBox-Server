@@ -63,7 +63,7 @@ class TcpServerTest {
         inputWhiteSpace(testByte);
         System.arraycopy("SMS".getBytes(StandardCharsets.UTF_8), 0, testByte, 0, "SMS".getBytes(StandardCharsets.UTF_8).length);
         System.arraycopy("20".getBytes(StandardCharsets.UTF_8), 0, testByte, 10, "10".getBytes(StandardCharsets.UTF_8).length);
-        System.arraycopy("BODYYYYYY".getBytes(StandardCharsets.UTF_8), 0, testByte, 20, "BODYYYYYY".getBytes(StandardCharsets.UTF_8).length);
+        System.arraycopy("BODY".getBytes(StandardCharsets.UTF_8), 0, testByte, 20, "BODYYYYYY".getBytes(StandardCharsets.UTF_8).length);
         return testByte;
     }
 
