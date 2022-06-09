@@ -4,7 +4,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kr.nanoit.config.Crypt;
-import kr.nanoit.config.Validation;
+import kr.nanoit.config.XmlMaker;
 import kr.nanoit.config.readProperties;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,10 +34,10 @@ import java.util.Properties;
 @Slf4j
 public class RootHandler implements HttpHandler {
 
-    private Validation validation;
+    private XmlMaker validation1;
 
     public RootHandler() {
-        this.validation = new Validation();
+        this.validation1 = new XmlMaker();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class RootHandler implements HttpHandler {
 
 
 
-            byte[] body = validation.validationValue(id, password).getBytes(StandardCharsets.UTF_8);
+            byte[] body = validation1.validationValue(id, password).getBytes(StandardCharsets.UTF_8);
             Headers headers = exchange.getResponseHeaders();
             headers.add("Content-Type", "application/xml");
             exchange.getRequestURI();

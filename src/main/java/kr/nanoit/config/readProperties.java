@@ -18,10 +18,9 @@ import java.util.Properties;
 @AllArgsConstructor
 public class readProperties {
 
-    private String propFileName;
-
-    public static Properties read(String propFileName){
+    public static Properties read(){
         Properties prop = new Properties();
+        String propFileName = "NanoitServer.properties";
         InputStream inputStream = readProperties.class.getClassLoader().getResourceAsStream(propFileName);
 
         try{

@@ -33,6 +33,8 @@ dependencies {
     implementation 'ch.qos.logback:logback-access:1.2.11'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
     implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.13.3'
+    implementation group: 'org.apache.commons', name: 'commons-configuration2', version: '2.0'
+
 
 }
 

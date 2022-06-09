@@ -1,42 +1,37 @@
 package kr.nanoit.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.configuration2.Configuration;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 @Slf4j
 public class Validation {
-    private String fileName = "NanoitServer.properties";
-    private String returnValue = null;
 
-    public String validationValue(String id, String pw) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        Properties prop = new Properties();
-        InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
-        prop.load(is);
-//        Pattern patt = Pattern.compile(id);
-        Pattern patt2 = Pattern.compile(pw);
+    private String pw;
 
-        for (Map.Entry<Object, Object> each : prop.entrySet()) {
+    public boolean Validation_PW(String pw) {
+        Properties readProp = readProperties.read();
+        Pattern patt = Pattern.compile(pw);
+
+        for (Map.Entry<Object, Object> each : readProp.entrySet()) {
 //            final Matcher m = patt.matcher((String) each.getValue());
-            final Matcher m2 = patt2.matcher((String) each.getValue());
-            Properties readProp = readProperties.read("NanoitServer.properties");
+            final Matcher matcher = patt.matcher((String) each.getValue());
             ServerInfo serverinfo = new ServerInfo();
             serverinfo.setIp(readProp.getProperty("tcp.server.port"));
 
-            if (m2.find()) {
-                serverinfo.setIp(readProp.getProperty("tcp.server.connect"));
-                serverinfo.setPort(readProp.getProperty("tcp.server.port"));
-                returnValue = new XmlParser().write(serverinfo);
-                System.out.println(returnValue);
-                sb.append(returnValue);
+            if (matcher.find()) {
+                log.info("[Validation] validation password success");
+                return true;
+            }else{
+                log.info("[Validation] validation password false");
             }
         }
-        return sb.toString();
+        return false;
     }
 }
+
 
