@@ -14,20 +14,19 @@ import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Slf4j
-public class SocketHandler implements Runnable {
+public class ReceiveServer implements Runnable {
 
     private final LinkedBlockingQueue<Packet> readStream;
     private final Socket socket;
     private final DataOutputStream dataOutputStream;
     private final DataInputStream dataInputStream;
 
-    SocketHandler(LinkedBlockingQueue<Packet> readStream, Socket socket) throws IOException {
+    public ReceiveServer(LinkedBlockingQueue<Packet> readStream, Socket socket)throws IOException {
         this.readStream = readStream;
         this.socket = socket;
         this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
         this.dataInputStream = new DataInputStream(socket.getInputStream());
     }
-
     @SneakyThrows
     @Override
     public void run() {

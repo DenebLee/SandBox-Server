@@ -2,12 +2,7 @@ package kr.nanoit.config;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 public class XmlMaker {
@@ -24,7 +19,7 @@ public class XmlMaker {
         returnValue = new XmlParser().write(serverinfo);
         System.out.println(returnValue);
         sb.append(returnValue);
-        return sb.toString();
+        return returnValue;
     }
 }
 

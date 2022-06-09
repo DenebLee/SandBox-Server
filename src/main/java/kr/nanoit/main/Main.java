@@ -1,22 +1,19 @@
 package kr.nanoit.main;
 
-import kr.nanoit.config.Identify;
 import kr.nanoit.dto.Packet;
 import kr.nanoit.http.NanoItHttpServer;
-import kr.nanoit.socket.TcpServer;
+import kr.nanoit.socket.ReceiveServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
-import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -26,10 +23,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 서버는 socket Thread와 http용 Thread를 따로 두어 지속적인 요청을 받음
  */
 @Slf4j
-public class Main<configuration> {
+public class Main {
 
     public static Configuration configuration;
-    public static Map<String, Identify> identifyMap = new HashMap<>();
+
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
 
@@ -37,20 +34,31 @@ public class Main<configuration> {
     public static void main(String[] args) throws Exception {
         final Configurations configurations = new Configurations();
         configuration = configurations.properties(new File("src/main/java/resources/NanoitServer.properties"));
-        int port = configuration.getInt("tcp.server.port");
-        ServerSocket serverSocket = new ServerSocket(port);
-
+        ServerSocket serverSocket = null;
         try {
+
+            serverSocket.bind(new InetSocketAddress(configuration.getString("tcp.server.host"), configuration.getInt("tcp.server.port")));
             Socket socket = serverSocket.accept();
-            log.info("{}", String.format("[%s][HTTP SERVER][START]", SIMPLE_DATE_FORMAT.format(new Date())));
+
+
+            log.info("[TCPSERVER START] {}", SIMPLE_DATE_FORMAT.format(new Date()));
             log.info("{}", String.format("[%s][HTTP SERVER][START]", SIMPLE_DATE_FORMAT.format(new Date())));
 
-            NanoItHttpServer nanoItHttpServer = new NanoItHttpServer("0.0.0.0", 9080);
+            NanoItHttpServer nanoItHttpServer = new NanoItHttpServer(configuration.getString("auth.server.host"), configuration.getInt("auth.server.port"));
             nanoItHttpServer.start();
 
             LinkedBlockingQueue<Packet> readStream = new LinkedBlockingQueue<>();
-            TcpServer tcpServer = new TcpServer(readStream, 41410);
-            Thread thread = new Thread(tcpServer);
+
+            /*
+             * Threads List
+             */
+            Thread thread = new Thread(new ReceiveServer(readStream, socket));
+//         Thread thread2 = new Thread();
+//         Thread thread3 = new Thread();
+
+            /*
+             * Threads start
+             */
             thread.start();
 
 

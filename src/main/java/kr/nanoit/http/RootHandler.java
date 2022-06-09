@@ -4,6 +4,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kr.nanoit.config.Crypt;
+import kr.nanoit.config.Validation;
 import kr.nanoit.config.XmlMaker;
 import kr.nanoit.config.readProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,9 @@ import java.util.Properties;
 @Slf4j
 public class RootHandler implements HttpHandler {
 
-    private XmlMaker validation1;
+    private XmlMaker xmlMaker;
 
     public RootHandler() {
-        this.validation1 = new XmlMaker();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class RootHandler implements HttpHandler {
             String id = result.get("id");
             String password = result.get("password");
 
-            Properties prop = readProperties.read("NanoitServer.properties");
+            Properties prop = readProperties.read();
             String enckey = prop.getProperty("auth.encryptkey.2");
 
             Crypt crypt = new Crypt();
@@ -67,21 +67,22 @@ public class RootHandler implements HttpHandler {
             }
 
 
+//            validation1.validationValue(id, password).getBytes(StandardCharsets.UTF_8);
+            try {
+                Validation validation = new Validation();
+                if (validation.Validation_PW(password) == true) {
+                    byte[] body = xmlMaker.XmlMake().getBytes(StandardCharsets.UTF_8);
+                    Headers headers = exchange.getResponseHeaders();
+                    headers.add("Content-Type", "application/xml");
+                    exchange.getRequestURI();
+                    exchange.sendResponseHeaders(200, body.length);
+                    respBody.write(body);
+                    respBody.close();
+                }else{
 
-            byte[] body = validation1.validationValue(id, password).getBytes(StandardCharsets.UTF_8);
-            Headers headers = exchange.getResponseHeaders();
-            headers.add("Content-Type", "application/xml");
-            exchange.getRequestURI();
-
-            exchange.sendResponseHeaders(200, body.length);
-            respBody.write(body);
-            respBody.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            if (respBody != null) {
-                respBody.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } finally {
             exchange.close();
