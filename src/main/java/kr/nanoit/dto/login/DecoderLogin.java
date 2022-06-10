@@ -1,4 +1,4 @@
-package kr.nanoit.login;
+package kr.nanoit.dto.login;
 
 public class DecoderLogin {
 

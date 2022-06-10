@@ -1,6 +1,5 @@
-package kr.nanoit.login;
+package kr.nanoit.dto.login;
 
-import kr.nanoit.config.MessageService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

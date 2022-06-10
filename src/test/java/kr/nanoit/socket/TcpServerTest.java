@@ -1,6 +1,6 @@
 //package kr.nanoit.socket;
 //
-//import kr.nanoit.dto.Packet;
+//import kr.nanoit.dto.example.Packet;
 //import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;

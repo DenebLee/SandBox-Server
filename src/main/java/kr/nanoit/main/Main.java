@@ -1,9 +1,9 @@
 package kr.nanoit.main;
 
 import kr.nanoit.config.Identify;
-import kr.nanoit.dto.Packet;
+import kr.nanoit.dto.example.Packet;
 import kr.nanoit.http.NanoItHttpServer;
-import kr.nanoit.socket.ReceiveServer;
+import kr.nanoit.server.ReceiveServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;

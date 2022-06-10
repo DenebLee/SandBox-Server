@@ -1,4 +1,4 @@
-package kr.nanoit.dto;
+package kr.nanoit.dto.example;
 
 public interface Packet {
     Header getHeader();

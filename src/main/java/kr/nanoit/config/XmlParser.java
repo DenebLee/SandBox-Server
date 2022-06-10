@@ -16,6 +16,8 @@ public class XmlParser {
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
+
+
         String xml = null;
         try {
             xml = xmlMapper.writeValueAsString(object);

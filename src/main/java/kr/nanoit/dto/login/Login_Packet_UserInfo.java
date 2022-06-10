@@ -1,9 +1,9 @@
-package kr.nanoit.socket;
+package kr.nanoit.dto.login;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public class GetterSetter {
+public class Login_Packet_UserInfo {
 
     @Getter
     @Setter
@@ -16,5 +16,6 @@ public class GetterSetter {
     @Getter
     @Setter
     private String packet_login_version;
+
 
 }

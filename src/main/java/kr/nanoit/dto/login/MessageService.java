@@ -1,14 +1,7 @@
-package kr.nanoit.config;
+package kr.nanoit.dto.login;
 
 import java.io.Serializable;
 
-/**
- * The interface Message service.
- *
- * @author cho_jeong_ha
- * @project Nanoit -Integration-Agent
- * @update 2019 -07-03
- */
 public interface MessageService extends Serializable {
     /**
      * Gets message service type.
