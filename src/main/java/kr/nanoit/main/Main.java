@@ -1,5 +1,6 @@
 package kr.nanoit.main;
 
+import kr.nanoit.config.Identify;
 import kr.nanoit.dto.Packet;
 import kr.nanoit.http.NanoItHttpServer;
 import kr.nanoit.socket.ReceiveServer;
@@ -9,11 +10,12 @@ import org.apache.commons.configuration2.builder.fluent.Configurations;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -26,26 +28,34 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Main {
 
     public static Configuration configuration;
-
-
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
+    public static Map<String, Identify> identifyMap = new HashMap<>();
 
 
     public static void main(String[] args) throws Exception {
         final Configurations configurations = new Configurations();
         configuration = configurations.properties(new File("src/main/java/resources/NanoitServer.properties"));
-        ServerSocket serverSocket = null;
+
+        int count = configuration.getInt("auth.id.count");
+
+        for (int i = 1; i <= count; i++) {
+            String id = configuration.getString(("auth.id." + i));
+            String password = configuration.getString(("auth.password." + i));
+            String encryptkey = configuration.getString(("auth.encryptkey." + i));
+
+            identifyMap.put(id, Identify.builder()
+                    .id(id)
+                    .password(password)
+                    .encryptKey(encryptkey)
+                    .build());
+        }
         try {
-
-            serverSocket.bind(new InetSocketAddress(configuration.getString("tcp.server.host"), configuration.getInt("tcp.server.port")));
-            Socket socket = serverSocket.accept();
-
-
-            log.info("[TCPSERVER START] {}", SIMPLE_DATE_FORMAT.format(new Date()));
-            log.info("{}", String.format("[%s][HTTP SERVER][START]", SIMPLE_DATE_FORMAT.format(new Date())));
+            log.info("[TCPSERVER START AND HTTPSERVER START] {}", SIMPLE_DATE_FORMAT.format(new Date()));
 
             NanoItHttpServer nanoItHttpServer = new NanoItHttpServer(configuration.getString("auth.server.host"), configuration.getInt("auth.server.port"));
             nanoItHttpServer.start();
+            ServerSocket serverSocket = new ServerSocket(configuration.getInt("tcp.server.port"));
+            Socket socket = serverSocket.accept();
 
             LinkedBlockingQueue<Packet> readStream = new LinkedBlockingQueue<>();
 
@@ -53,14 +63,13 @@ public class Main {
              * Threads List
              */
             Thread thread = new Thread(new ReceiveServer(readStream, socket));
-//         Thread thread2 = new Thread();
-//         Thread thread3 = new Thread();
+//          Thread thread2 = new Thread();
+//          Thread thread3 = new Thread();
 
             /*
              * Threads start
              */
             thread.start();
-
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println(String.format("[%s][HTTP SERVER][STOP]", SIMPLE_DATE_FORMAT.format(new Date())))));
         } catch (IOException e) {

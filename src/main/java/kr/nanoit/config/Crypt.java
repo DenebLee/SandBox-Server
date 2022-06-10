@@ -33,9 +33,7 @@ public class Crypt {
             String Key = enc;
 
             if (Key == null) {
-                System.out.println("Crypt Init Err, enCryptKey=null, ");
             } else {
-                System.out.println(String.format("Crypt Init, enCryptKey=%s", enc));
                 int keySize = Key.getBytes().length;
 
                 if (keySize > 16)

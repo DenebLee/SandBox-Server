@@ -4,9 +4,8 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kr.nanoit.config.Crypt;
-import kr.nanoit.config.Validation;
 import kr.nanoit.config.XmlMaker;
-import kr.nanoit.config.readProperties;
+import kr.nanoit.main.Main;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.BadPaddingException;
@@ -18,7 +17,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Stringbuiler는 String과 문자열을 더할 때 새로운 객체를 생성하는 것이 아니라 기존의 데이터에 더하는 방식을
@@ -38,6 +36,7 @@ public class RootHandler implements HttpHandler {
     private XmlMaker xmlMaker;
 
     public RootHandler() {
+        xmlMaker = new XmlMaker();
     }
 
     @Override
@@ -45,41 +44,33 @@ public class RootHandler implements HttpHandler {
         OutputStream respBody = exchange.getResponseBody();
 
         try {
-            log.info("Addresses accessed by clients {}", exchange.getLocalAddress());
+            log.info("Addresses accessed by clients [{}]", exchange.getLocalAddress());
             Map<String, String> result = getQueryParameters(exchange.getRequestURI().getQuery());
-            log.warn(String.valueOf(respBody));
-
             String id = result.get("id");
             String password = result.get("password");
 
-            Properties prop = readProperties.read();
-            String enckey = prop.getProperty("auth.encryptkey.2");
-
             Crypt crypt = new Crypt();
-            crypt.cryptInit(enckey);
-            if (password != null) {
-                try {
-                    password = new String(crypt.deCrypt(password));
-                    log.info("복호화된 비밀번호 값 : {}", password);
-                } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-//            validation1.validationValue(id, password).getBytes(StandardCharsets.UTF_8);
             try {
-                Validation validation = new Validation();
-                if (validation.Validation_PW(password) == true) {
-                    byte[] body = xmlMaker.XmlMake().getBytes(StandardCharsets.UTF_8);
-                    Headers headers = exchange.getResponseHeaders();
-                    headers.add("Content-Type", "application/xml");
-                    exchange.getRequestURI();
-                    exchange.sendResponseHeaders(200, body.length);
-                    respBody.write(body);
-                    respBody.close();
-                }else{
-
+                if (id != null && password != null) {
+                    if (Main.identifyMap.containsKey(id)) {
+                        crypt.cryptInit(Main.identifyMap.get(id).getEncryptKey());
+                        try {
+                            password = new String(crypt.deCrypt(password));
+                        } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (password.equals(Main.identifyMap.get(id).getPassword())) {
+                        log.info("REQUESTED PASSWORD IS CORRECT");
+                        log.info("REQUESTED ID : [{}] , PASSWORD : [{}]" , id, password);
+                        byte[] body = xmlMaker.XmlMake().getBytes(StandardCharsets.UTF_8);
+                        Headers headers = exchange.getResponseHeaders();
+                        headers.add("Content-Type", "application/xml");
+                        exchange.getRequestURI();
+                        exchange.sendResponseHeaders(200, body.length);
+                        respBody.write(body);
+                        respBody.close();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

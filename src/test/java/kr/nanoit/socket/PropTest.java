@@ -19,7 +19,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,7 +42,6 @@ class PropTest {
             e.printStackTrace();
         }
     }
-
     @Test
     @DisplayName("XML생성 테스트")
     void MakeXml() throws ParserConfigurationException, TransformerException {
