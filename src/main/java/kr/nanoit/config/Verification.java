@@ -18,7 +18,7 @@ import lombok.ToString;
  *
  */
 
-public class Identify {
+public class Verification {
 
     private String id;
 

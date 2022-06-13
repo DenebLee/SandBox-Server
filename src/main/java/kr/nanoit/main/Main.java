@@ -1,9 +1,9 @@
 package kr.nanoit.main;
 
-import kr.nanoit.config.Identify;
-import kr.nanoit.dto.example.Packet;
+import kr.nanoit.config.Verification;
 import kr.nanoit.http.NanoItHttpServer;
 import kr.nanoit.server.ReceiveServer;
+import kr.nanoit.server.SendServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.LinkedBlockingQueue;
 
 
 /**
@@ -29,7 +28,7 @@ public class Main {
 
     public static Configuration configuration;
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
-    public static Map<String, Identify> identifyMap = new HashMap<>();
+    public static Map<String, Verification> valificationMap = new HashMap<>();
 
 
     public static void main(String[] args) throws Exception {
@@ -43,7 +42,7 @@ public class Main {
             String password = configuration.getString(("auth.password." + i));
             String encryptkey = configuration.getString(("auth.encryptkey." + i));
 
-            identifyMap.put(id, Identify.builder()
+            valificationMap.put(id, Verification.builder()
                     .id(id)
                     .password(password)
                     .encryptKey(encryptkey)
@@ -57,19 +56,19 @@ public class Main {
             ServerSocket serverSocket = new ServerSocket(configuration.getInt("tcp.server.port"));
             Socket socket = serverSocket.accept();
 
-            LinkedBlockingQueue<Packet> readStream = new LinkedBlockingQueue<>();
 
             /*
              * Threads List
              */
-            Thread thread = new Thread(new ReceiveServer(readStream, socket));
-//          Thread thread2 = new Thread();
+            Thread thread = new Thread(new ReceiveServer(socket));
+            Thread thread2 = new Thread(new SendServer(socket));
 //          Thread thread3 = new Thread();
 
             /*
              * Threads start
              */
             thread.start();
+            thread2.start();
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println(String.format("[%s][HTTP SERVER][STOP]", SIMPLE_DATE_FORMAT.format(new Date())))));
         } catch (IOException e) {

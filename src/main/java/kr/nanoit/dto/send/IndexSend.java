@@ -1,0 +1,62 @@
+package kr.nanoit.dto.send;
+
+
+import kr.nanoit.dto.login.IndexHeader;
+
+/**
+ * The type Index send.
+ */
+public class IndexSend {
+    /**
+     * The constant BIZ_INDEX_SEND_MESSAGE_TYPE.
+     */
+    public static int BIZ_INDEX_SEND_MESSAGE_TYPE = IndexHeader.COMMON_INDEX_HEADER_FULL_LENGTH;
+    /**
+     * The constant BIZ_INDEX_SEND_MESSAGE_ID.
+     */
+    public static int BIZ_INDEX_SEND_MESSAGE_ID = BIZ_INDEX_SEND_MESSAGE_TYPE + LengthSend.BIZ_LENGTH_SEND_MESSAGE_TYPE;
+    /**
+     * The constant BIZ_INDEX_SEND_RECEIVE_NUMBER.
+     */
+    public static int BIZ_INDEX_SEND_RECEIVE_NUMBER = BIZ_INDEX_SEND_MESSAGE_ID + LengthSend.BIZ_LENGTH_SEND_MESSAGE_ID;
+    /**
+     * The constant BIZ_INDEX_SEND_CALLBACK_NUMBER.
+     */
+    public static int BIZ_INDEX_SEND_CALLBACK_NUMBER = BIZ_INDEX_SEND_RECEIVE_NUMBER + LengthSend.BIZ_LENGTH_SEND_RECEIVE_NUMBER;
+    /**
+     * The constant BIZ_INDEX_SEND_MESSAGE.
+     */
+    public static int BIZ_INDEX_SEND_MESSAGE = BIZ_INDEX_SEND_CALLBACK_NUMBER + LengthSend.BIZ_LENGTH_SEND_CALLBACK_NUMBER;
+    /**
+     * The constant BIZ_INDEX_SEND_DATA_COUNT.
+     */
+    public static int BIZ_INDEX_SEND_DATA_COUNT = BIZ_INDEX_SEND_MESSAGE + LengthSend.BIZ_LENGTH_SEND_MESSAGE;
+    /**
+     * The constant BIZ_INDEX_SEND_ATTACHMENT_DATA_TYPE.
+     */
+    public static int BIZ_INDEX_SEND_ATTACHMENT_DATA_TYPE = BIZ_INDEX_SEND_DATA_COUNT + LengthSend.BIZ_LENGTH_SEND_DATA_COUNT;
+    /**
+     * The constant BIZ_INDEX_SEND_ATTACHMENT_DATA_SIZE.
+     */
+    public static int BIZ_INDEX_SEND_ATTACHMENT_DATA_SIZE = BIZ_INDEX_SEND_ATTACHMENT_DATA_TYPE + LengthSend.BIZ_LENGTH_SEND_ATTACHMENT_DATA_TYPE;
+    /**
+     * The constant BIZ_INDEX_SEND_ATTACHMENT_DATA.
+     */
+    public static int BIZ_INDEX_SEND_ATTACHMENT_DATA = BIZ_INDEX_SEND_ATTACHMENT_DATA_SIZE + LengthSend.BIZ_LENGTH_SEND_ATTACHMENT_DATA_SIZE;
+    /**
+     * The constant BIZ_INDEX_SEND_ATTACHMENT_DATAB_SIZE.
+     */
+    public static int BIZ_INDEX_SEND_ATTACHMENT_DATAB_SIZE = BIZ_INDEX_SEND_ATTACHMENT_DATA + LengthSend.BIZ_LENGTH_SEND_ATTACHMENT_DATA;
+    /**
+     * The constant BIZ_INDEX_SEND_ATTACHMENT_FULL_SIZE.
+     */
+    public static int BIZ_INDEX_SEND_ATTACHMENT_FULL_SIZE = LengthSend.BIZ_LENGTH_SEND_ATTACHMENT_DATA_TYPE + LengthSend.BIZ_LENGTH_SEND_ATTACHMENT_DATA_SIZE;
+    /**
+     * The constant BIZ_INDEX_SEND_ORG_CALLBACK_NUMBER_SIZE.
+     */
+    public static int BIZ_INDEX_SEND_ORG_CALLBACK_NUMBER_SIZE = BIZ_INDEX_SEND_ATTACHMENT_DATAB_SIZE + LengthSend.BIZ_LENGTH_SEND_ORG_CALLBACK_NUMBER;
+    /**
+     * The constant BIZ_INDEX_SEND_FULL.
+     */
+    public static int BIZ_INDEX_SEND_FULL = BIZ_INDEX_SEND_ORG_CALLBACK_NUMBER_SIZE + LengthSend.BIZ_LENGTH_SEND_BILL_ID;
+}

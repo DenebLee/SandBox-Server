@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class LoginMessageService implements MessageService {
-
     private String messageServiceType;
     private String protocol;
     private String id;

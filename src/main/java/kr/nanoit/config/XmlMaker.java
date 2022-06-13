@@ -14,7 +14,6 @@ public class XmlMaker {
         serverInfo = new ServerInfo();
     }
 
-
     public String XmlMake() {
         StringBuilder sb = new StringBuilder();
         serverInfo.setIp(Main.configuration.getString("tcp.server.host"));

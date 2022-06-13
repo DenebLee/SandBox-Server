@@ -31,11 +31,11 @@ import java.util.Map;
  * 버퍼 리더에 데이터가 쌓이면 한줄씩 빼야된다
  */
 @Slf4j
-public class RootHandler implements HttpHandler {
+public class HttpServerHandler implements HttpHandler {
 
     private XmlMaker xmlMaker;
 
-    public RootHandler() {
+    public HttpServerHandler() {
         xmlMaker = new XmlMaker();
     }
 
@@ -52,15 +52,15 @@ public class RootHandler implements HttpHandler {
             Crypt crypt = new Crypt();
             try {
                 if (id != null && password != null) {
-                    if (Main.identifyMap.containsKey(id)) {
-                        crypt.cryptInit(Main.identifyMap.get(id).getEncryptKey());
+                    if (Main.valificationMap.containsKey(id)) {
+                        crypt.cryptInit(Main.valificationMap.get(id).getEncryptKey());
                         try {
                             password = new String(crypt.deCrypt(password));
                         } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
                             e.printStackTrace();
                         }
                     }
-                    if (password.equals(Main.identifyMap.get(id).getPassword())) {
+                    if (password.equals(Main.valificationMap.get(id).getPassword())) {
                         log.info("REQUESTED PASSWORD IS CORRECT");
                         log.info("REQUESTED ID : [{}] , PASSWORD : [{}]" , id, password);
                         byte[] body = xmlMaker.XmlMake().getBytes(StandardCharsets.UTF_8);

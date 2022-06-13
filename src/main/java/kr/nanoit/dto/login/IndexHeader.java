@@ -9,4 +9,5 @@ public class IndexHeader {
      * The constant COMMON_INDEX_HEADER_FULL_LENGTH.
      */
     public static int COMMON_INDEX_HEADER_FULL_LENGTH = COMMON_INDEX_HEADER_BODY_LEN + LengthHeader.COMMON_LENGTH_HEADER_BODY_LEN;
+
 }
