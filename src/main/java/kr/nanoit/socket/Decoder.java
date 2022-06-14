@@ -47,6 +47,7 @@ public class Decoder {
         login_packet_userInfo.setPacket_login_version(loginMessageService.getVersion());
 
 
+
         if (Main.valificationMap.containsKey(decoderLogin.id(receiveBytes))) {
             crypt.cryptInit(Main.valificationMap.get(loginMessageService.getId()).getEncryptKey());
             if (Main.valificationMap.get(decoderLogin.id(receiveBytes)).getPassword().contains(new String(crypt.deCrypt(decoderLogin.password(receiveBytes))))) {
@@ -58,14 +59,13 @@ public class Decoder {
             log.info(String.format("[응답] [로그인 실패] ID : {} PW : {} VERSION : {}", loginMessageService.getId(), loginMessageService.getPassword(), loginMessageService.getVersion()));
         }
         queueList.getQueue_for_Send().offer(loginMessageService); // 로그인에 대한 응답 sendQueue에 쌓기
-        System.out.println(" 로그인 응답 패킷에 대한 확인"+ queueList.getQueue_for_Send().offer(loginMessageService));
+        // 여기선 queue에 데이터가 삽입되는거 확인됨
     }
 
     public void decoderSend(byte[] receiveBytes) throws Exception {
         SMSMessageService smsMessageService = new SMSMessageService();
         smsMessageService.setMessageServiceType(MessageType.SMS);
         smsMessageService.setProtocol("SEND_ACK");
-
         smsMessageService.setTr_rsltstat("0");
         smsMessageService.setTr_num(decoderSMSMessageService.messageKey(receiveBytes));
         smsMessageService.setTr_phone(new String(crypt.deCrypt(decoderSMSMessageService.phone(receiveBytes))));
@@ -79,8 +79,6 @@ public class Decoder {
         System.out.println(String.format("[RECEIVE] [SUBMIT_REQUEST] [%s] TR_NUM:%s TR_SENDSTAT:%s %s", MessageType.SMS, smsMessageService.getTr_num(), smsMessageService.getTr_sendstat(), smsMessageService));
         queueList.getQueue_for_Send().offer(smsMessageService); // Client요청 데이터 대한 응답 sendQueue에 쌓기
         System.out.println(" 로그인 응답 패킷에 대한 확인"+ queueList.getQueue_for_Send().offer(smsMessageService));
-
-
     }
 
     

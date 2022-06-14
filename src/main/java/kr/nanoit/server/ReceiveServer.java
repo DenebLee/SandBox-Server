@@ -5,7 +5,7 @@ import kr.nanoit.config.QueueList;
 import kr.nanoit.dto.login.DecoderLogin;
 import kr.nanoit.dto.login.Login_Packet_UserInfo;
 import kr.nanoit.socket.Decoder;
-import kr.nanoit.socket.SocketUtil;
+import kr.nanoit.socket.SocketConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +16,7 @@ import java.net.Socket;
 public class ReceiveServer implements Runnable {
 
     private final Socket socket;
-    private SocketUtil socketUtil;
+    private SocketConfig socketUtil;
     private QueueList queueList;
     private DecoderLogin decoderLogin;
     private Crypt crypt;
@@ -25,7 +25,7 @@ public class ReceiveServer implements Runnable {
 
 
     public ReceiveServer( Socket socket) throws IOException {
-        socketUtil = new SocketUtil(socket);
+        socketUtil = new SocketConfig(socket);
         this.socket = socket;
         decoderLogin = new DecoderLogin();
         crypt = new Crypt();
@@ -49,14 +49,21 @@ public class ReceiveServer implements Runnable {
                         case SEND:
                             decorder.decoderSend(receiveByte);
                             break;
+                        default:
+                            System.out.println(String.format("[@ERROR@] NOT FOUND PACKET TYPE, ID:%s"));
+                            break;
                     }
-                    decorder.decoderLogin(receiveByte);
+                }else{
+                    System.out.println("receiveByte가 null입니다");
+                    socket.close();
+                    return;
                 }
             }
 
         } catch (Exception e) {
             log.error("IOException occurred", e);
             socket.close();
+            return;
         }
     }
 }

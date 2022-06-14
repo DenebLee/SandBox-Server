@@ -60,9 +60,8 @@ public class Main {
             /*
              * Threads List
              */
-            Thread thread = new Thread(new ReceiveServer(socket));
-            Thread thread2 = new Thread(new SendServer(socket));
-//          Thread thread3 = new Thread();
+                Thread thread = new Thread(new SendServer(socket));
+                Thread thread2 = new Thread(new ReceiveServer(socket));
 
             /*
              * Threads start
