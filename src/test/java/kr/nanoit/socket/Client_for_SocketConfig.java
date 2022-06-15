@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
-class Client_for_SocketConfig {
+class Client_for_Test {
 
     String returnData = "";
 
