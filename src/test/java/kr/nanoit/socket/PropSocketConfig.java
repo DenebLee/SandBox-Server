@@ -25,7 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-class PropTest {
+class PropSocketConfig {
     @Test
     @DisplayName("server Test")
     void PropTest2() throws IOException {

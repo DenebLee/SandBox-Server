@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public class InDecodeTest {
+public class InDecodeSocketConfig {
     @Test
     @DisplayName("")
     void Test(){
