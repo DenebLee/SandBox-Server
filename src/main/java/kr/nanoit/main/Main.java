@@ -1,5 +1,6 @@
 package kr.nanoit.main;
 
+import kr.nanoit.config.QueueList;
 import kr.nanoit.config.Verification;
 import kr.nanoit.http.NanoItHttpServer;
 import kr.nanoit.server.ReceiveServer;
@@ -56,17 +57,15 @@ public class Main {
             ServerSocket serverSocket = new ServerSocket(configuration.getInt("tcp.server.port"));
             Socket socket = serverSocket.accept();
 
+            // Hand over to queue param for each thread
+            QueueList queueList = new QueueList();
 
-            /*
-             * Threads List
-             */
-            Thread thread = new Thread(new ReceiveServer(socket));
-            Thread thread2 = new Thread(new SendServer(socket));
-//          Thread thread3 = new Thread();
 
-            /*
-             * Threads start
-             */
+            // Thread List
+            Thread thread = new Thread(new ReceiveServer(socket, queueList));
+            Thread thread2 = new Thread(new SendServer(socket, queueList));
+
+            // Thread Start
             thread.start();
             thread2.start();
 
