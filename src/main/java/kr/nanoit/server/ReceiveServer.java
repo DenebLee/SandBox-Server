@@ -2,13 +2,13 @@ package kr.nanoit.server;
 
 import kr.nanoit.config.Crypt;
 import kr.nanoit.config.QueueList;
-import kr.nanoit.dto.login.DecoderLogin;
+import kr.nanoit.decoder.DecoderLogin;
 import kr.nanoit.dto.login.LoginMessageService;
 import kr.nanoit.dto.login.Login_Packet_UserInfo;
-import kr.nanoit.dto.send.MessageType;
-import kr.nanoit.dto.send.SMSMessageService;
+import kr.nanoit.dto.messsage_Structure.MessageType;
+import kr.nanoit.dto.messsage_Structure.SMSMessageService;
 import kr.nanoit.main.Main;
-import kr.nanoit.socket.DecoderSMSMessageService;
+import kr.nanoit.decoder.DecoderSMSMessageService;
 import kr.nanoit.socket.SocketUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +76,6 @@ public class ReceiveServer implements Runnable {
         loginMessageService.setPassword(decoderLogin.password(receiveBytes));
         loginMessageService.setVersion(decoderLogin.version(receiveBytes));
 
-        System.out.println("로그인 메시지 서비스 안 데이터 확인" + loginMessageService);
 
         // init UserLoginPacketUserinfo data
         loginPacketUserInfo.setPacket_login_id(loginMessageService.getId());

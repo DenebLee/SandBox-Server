@@ -1,7 +1,7 @@
 package kr.nanoit.dto.send;
 
 
-import kr.nanoit.dto.login.IndexHeader;
+import kr.nanoit.dto.messsage_Structure.IndexHeader;
 
 /**
  * The type Index send.

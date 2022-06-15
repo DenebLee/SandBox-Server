@@ -1,4 +1,4 @@
-package kr.nanoit.dto;
+package kr.nanoit.dto.messsage_Structure;
 
 public enum PacketType {
 

@@ -36,6 +36,8 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-configuration2', version: '2.0'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
+    implementation group: 'com.github.marschall', name: 'threeten-jpa-oracle-api', version: '1.11'
+
 
 
 

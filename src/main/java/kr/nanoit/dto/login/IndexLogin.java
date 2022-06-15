@@ -1,5 +1,7 @@
 package kr.nanoit.dto.login;
 
+import kr.nanoit.dto.messsage_Structure.IndexHeader;
+
 public class IndexLogin {
     /**
      * The constant COMMON_INDEX_LOGIN_ID.

@@ -1,4 +1,4 @@
-package kr.nanoit.socket;
+package kr.nanoit.decoder;
 
 
 import kr.nanoit.dto.send.IndexSend;

@@ -19,7 +19,11 @@ public class XmlMaker {
         serverInfo.setIp(Main.configuration.getString("tcp.server.host"));
         serverInfo.setPort(Main.configuration.getString("tcp.server.port"));
         returnValue = new XmlParser().write(serverInfo);
-        System.out.println(returnValue);
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+        log.info("Client에게 보낸 XML {} ", returnValue);
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------");
         sb.append(returnValue);
         return returnValue;
     }

@@ -2,7 +2,7 @@ package kr.nanoit.main;
 
 import kr.nanoit.config.QueueList;
 import kr.nanoit.config.Verification;
-import kr.nanoit.http.NanoItHttpServer;
+import kr.nanoit.http.SandBoxHttpserver;
 import kr.nanoit.server.ReceiveServer;
 import kr.nanoit.server.SendServer;
 import lombok.extern.slf4j.Slf4j;
@@ -52,22 +52,30 @@ public class Main {
         try {
             log.info("[TCPSERVER START AND HTTPSERVER START] {}", SIMPLE_DATE_FORMAT.format(new Date()));
 
-            NanoItHttpServer nanoItHttpServer = new NanoItHttpServer(configuration.getString("auth.server.host"), configuration.getInt("auth.server.port"));
-            nanoItHttpServer.start();
+            SandBoxHttpserver sandBoxHttpserver = new SandBoxHttpserver(configuration.getString("auth.server.host"), configuration.getInt("auth.server.port"));
+            sandBoxHttpserver.start();
+
             ServerSocket serverSocket = new ServerSocket(configuration.getInt("tcp.server.port"));
             Socket socket = serverSocket.accept();
 
             // Hand over to queue param for each thread
             QueueList queueList = new QueueList();
 
-
             // Thread List
             Thread thread = new Thread(new ReceiveServer(socket, queueList));
+            thread.setName("Receive-Server");
+
             Thread thread2 = new Thread(new SendServer(socket, queueList));
+            thread2.setName("Send-Server");
+
+//            Thread thread3 = new Thread(new ReportServer(socket, queueList));
+//            thread3.setName("MobileOperator-Server");
+
 
             // Thread Start
             thread.start();
             thread2.start();
+//            thread3.start();
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println(String.format("[%s][HTTP SERVER][STOP]", SIMPLE_DATE_FORMAT.format(new Date())))));
         } catch (IOException e) {

@@ -1,6 +1,5 @@
-package kr.nanoit.dto.send;
+package kr.nanoit.dto.messsage_Structure;
 
-import kr.nanoit.dto.login.MessageService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

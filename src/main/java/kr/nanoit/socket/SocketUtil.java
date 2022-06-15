@@ -1,8 +1,8 @@
 package kr.nanoit.socket;
 
-import kr.nanoit.dto.PacketType;
-import kr.nanoit.dto.login.IndexHeader;
-import kr.nanoit.dto.login.LengthHeader;
+import kr.nanoit.dto.messsage_Structure.PacketType;
+import kr.nanoit.dto.messsage_Structure.IndexHeader;
+import kr.nanoit.dto.messsage_Structure.LengthHeader;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
