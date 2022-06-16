@@ -1,12 +1,11 @@
 package kr.nanoit.main;
 
-import kr.nanoit.config.QueueList;
 import kr.nanoit.config.Verification;
-import kr.nanoit.dto.login.Login_Packet_UserInfo;
 import kr.nanoit.http.SandBoxHttpserver;
 import kr.nanoit.server.ReceiveServer;
 import kr.nanoit.server.ReportServer;
 import kr.nanoit.server.SendServer;
+import kr.nanoit.socket.SocketUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
@@ -14,7 +13,6 @@ import org.apache.commons.configuration2.builder.fluent.Configurations;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,15 +20,15 @@ import java.util.Map;
 
 
 /**
- * 클라이언트가 http통신으로 서버에 아이디와 비번을 통해 xml을 요청하면 서버는 해당 요청 쿼리스트링을 검증후 xml을 보냄
+ * 클라이언트가 http 통신으로 서버에 아이디와 비번을 통해 xml을 요청하면 서버는 해당 요청 쿼리스트링을 검증후 xml을 보냄
  * xml을 파싱해서 소켓 접속 엔드포이트를 얻은 클라이언트는 서버와 socket연결을 시도
  * 서버는 socket Thread와 http용 Thread를 따로 두어 지속적인 요청을 받음
  */
 @Slf4j
 public class Main {
 
-    public static Configuration configuration;
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
+    public static Configuration configuration;
     public static Map<String, Verification> valificationMap = new HashMap<>();
 
 
@@ -59,23 +57,20 @@ public class Main {
 
 
             ServerSocket serverSocket = new ServerSocket(configuration.getInt("tcp.server.port"));
-            Socket socket = serverSocket.accept();
-
-            // Hand over to queue param for each thread
-            // 쓰레드들끼리 사용할 값 공유 위해 메인쓰레드에 선언
-
-            QueueList queueList = new QueueList();
-            Login_Packet_UserInfo loginPacketUserInfo = new Login_Packet_UserInfo();
+            /*
+                SocketUtil이란 클래스를 만들어 각 쓰레드별로 공유하는 값을 사용할 수 있도록 공통화 작업
+             */
+            SocketUtil socketUtil = new SocketUtil(serverSocket.accept());
 
             // Thread List
-            Thread thread = new Thread(new ReceiveServer(socket, queueList,loginPacketUserInfo));
+            Thread thread = new Thread(new ReceiveServer(socketUtil));
             thread.setName("Receive-Server");
 
-            Thread thread2 = new Thread(new SendServer(socket, queueList,loginPacketUserInfo));
+            Thread thread2 = new Thread(new SendServer(socketUtil));
             thread2.setName("Send-Server");
 
-            Thread thread3 = new Thread(new ReportServer(queueList));
-            thread3.setName("MobileOperator-Server");
+            Thread thread3 = new Thread(new ReportServer(socketUtil));
+            thread3.setName("Report-Server");
 
 
             // Thread Start

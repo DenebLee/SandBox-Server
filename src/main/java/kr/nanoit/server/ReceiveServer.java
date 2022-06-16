@@ -1,14 +1,12 @@
 package kr.nanoit.server;
 
 import kr.nanoit.config.Crypt;
-import kr.nanoit.config.QueueList;
 import kr.nanoit.decoder.DecoderLogin;
+import kr.nanoit.decoder.DecoderSMSMessageService;
 import kr.nanoit.dto.login.LoginMessageService;
-import kr.nanoit.dto.login.Login_Packet_UserInfo;
 import kr.nanoit.dto.messsage_Structure.MessageType;
 import kr.nanoit.dto.messsage_Structure.SMSMessageService;
 import kr.nanoit.main.Main;
-import kr.nanoit.decoder.DecoderSMSMessageService;
 import kr.nanoit.socket.SocketUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
-import java.net.Socket;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.sql.Timestamp;
@@ -24,25 +21,19 @@ import java.sql.Timestamp;
 @Slf4j
 public class ReceiveServer implements Runnable {
 
-    private final QueueList queueList;
-    private final Socket socket;
     private final SocketUtil socketUtil;
     private final DecoderLogin decoderLogin;
     private final Crypt crypt;
-    private final Login_Packet_UserInfo loginPacketUserInfo;
     private final DecoderSMSMessageService decoderSMSMessageService;
 
 
-    public ReceiveServer( Socket socket, QueueList queueList, Login_Packet_UserInfo loginPacketUserInfo) throws IOException {
+    public ReceiveServer(SocketUtil socketUtil) throws IOException {
 
-        socketUtil = new SocketUtil(socket);
+        this.socketUtil = socketUtil;
         decoderLogin = new DecoderLogin();
         crypt = new Crypt();
-        this.loginPacketUserInfo = loginPacketUserInfo;
         decoderSMSMessageService = new DecoderSMSMessageService();
 
-        this.socket = socket;
-        this.queueList = queueList;
     }
 
     @SneakyThrows
@@ -64,7 +55,7 @@ public class ReceiveServer implements Runnable {
             }
         } catch (Exception e) {
             log.error("IOException occurred", e);
-            socket.close();
+            socketUtil.socketClose();
         }
     }
 
@@ -77,9 +68,9 @@ public class ReceiveServer implements Runnable {
 
 
         // init UserLoginPacketUserinfo data
-        loginPacketUserInfo.setPacket_login_id(loginMessageService.getId());
-        loginPacketUserInfo.setPacket_login_password(loginMessageService.getPassword());
-        loginPacketUserInfo.setPacket_login_version(loginMessageService.getVersion());
+        socketUtil.setPacket_login_id(loginMessageService.getId());
+        socketUtil.setPacket_login_password(loginMessageService.getPassword());
+        socketUtil.setPacket_login_version(loginMessageService.getVersion());
 
 
         if (Main.valificationMap.containsKey(decoderLogin.id(receiveBytes))) {
@@ -92,7 +83,7 @@ public class ReceiveServer implements Runnable {
         } else {
             log.info("[응답] [로그인 실패] ID : {} PW : {} VERSION : {}", loginMessageService.getId(), loginMessageService.getPassword(), loginMessageService.getVersion());
         }
-        queueList.getQueue_for_Send().offer(loginMessageService); // 로그인에 대한 응답 sendQueue에 쌓기
+        socketUtil.getQueue_for_Send().offer(loginMessageService); // 로그인에 대한 응답 sendQueue에 쌓기
     }
 
     public void decoderSend(byte[] receiveBytes) throws Exception {
@@ -111,7 +102,8 @@ public class ReceiveServer implements Runnable {
         smsMessageService.setTr_senddate(new Timestamp(System.currentTimeMillis()));
 
         log.info("[받음] [요청 제출] [메세지 타입 : {}] TR_NUM : {}  TR_SENDSTAT : {} {} ", MessageType.SMS, smsMessageService.getTr_num(), smsMessageService.getTr_sendstat(), smsMessageService);
-        queueList.getQueue_for_Send().offer(smsMessageService); // Client 요청 데이터 대한 응답 sendQueue에 쌓기
+
+        socketUtil.getQueue_for_Send().offer(smsMessageService); // Client 요청 데이터 대한 응답 sendQueue에 쌓기
     }
 }
 
