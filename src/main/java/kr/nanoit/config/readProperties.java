@@ -11,7 +11,6 @@ import java.util.Properties;
  * prop.getProperty("key")로 값을 가져오도록 Properties를 읽어 Propertues 객체로 반환
  * Default Location : src/main/resources
  *
- * @throws java.io.FileNotFoundException
  * @author LeeJungSeob
  *
  */

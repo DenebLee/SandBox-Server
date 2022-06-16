@@ -33,7 +33,7 @@ import java.util.Map;
 @Slf4j
 public class HttpServerHandler implements HttpHandler {
 
-    private XmlMaker xmlMaker;
+    private final XmlMaker xmlMaker;
 
     public HttpServerHandler() {
         xmlMaker = new XmlMaker();
@@ -83,7 +83,7 @@ public class HttpServerHandler implements HttpHandler {
     public Map<String, String> getQueryParameters(String query) {
         Map<String, String> result = new HashMap<>();
         for (String param : query.split("&")) {
-            String pair[] = param.split("=");
+            String[] pair = param.split("=");
             if (pair.length > 1) {
                 result.put(pair[0], pair[1]);
             } else {

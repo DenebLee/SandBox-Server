@@ -2,8 +2,10 @@ package kr.nanoit.main;
 
 import kr.nanoit.config.QueueList;
 import kr.nanoit.config.Verification;
+import kr.nanoit.dto.login.Login_Packet_UserInfo;
 import kr.nanoit.http.SandBoxHttpserver;
 import kr.nanoit.server.ReceiveServer;
+import kr.nanoit.server.ReportServer;
 import kr.nanoit.server.SendServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
@@ -55,29 +57,33 @@ public class Main {
             SandBoxHttpserver sandBoxHttpserver = new SandBoxHttpserver(configuration.getString("auth.server.host"), configuration.getInt("auth.server.port"));
             sandBoxHttpserver.start();
 
+
             ServerSocket serverSocket = new ServerSocket(configuration.getInt("tcp.server.port"));
             Socket socket = serverSocket.accept();
 
             // Hand over to queue param for each thread
+            // 쓰레드들끼리 사용할 값 공유 위해 메인쓰레드에 선언
+
             QueueList queueList = new QueueList();
+            Login_Packet_UserInfo loginPacketUserInfo = new Login_Packet_UserInfo();
 
             // Thread List
-            Thread thread = new Thread(new ReceiveServer(socket, queueList));
+            Thread thread = new Thread(new ReceiveServer(socket, queueList,loginPacketUserInfo));
             thread.setName("Receive-Server");
 
-            Thread thread2 = new Thread(new SendServer(socket, queueList));
+            Thread thread2 = new Thread(new SendServer(socket, queueList,loginPacketUserInfo));
             thread2.setName("Send-Server");
 
-//            Thread thread3 = new Thread(new ReportServer(socket, queueList));
-//            thread3.setName("MobileOperator-Server");
+            Thread thread3 = new Thread(new ReportServer(queueList));
+            thread3.setName("MobileOperator-Server");
 
 
             // Thread Start
             thread.start();
             thread2.start();
-//            thread3.start();
+            thread3.start();
 
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println(String.format("[%s][HTTP SERVER][STOP]", SIMPLE_DATE_FORMAT.format(new Date())))));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.printf("[%s][HTTP SERVER][STOP]%n", SIMPLE_DATE_FORMAT.format(new Date()))));
         } catch (IOException e) {
             log.error("IOException error occurred", e);
         }

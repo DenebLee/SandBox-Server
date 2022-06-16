@@ -7,9 +7,7 @@ import kr.nanoit.dto.send.LengthSend;
 /**
  * The type Send ack decoder.
  *
- * @author cho_jeong_ha
- * @project HCN -BKG-AGENT
- * @update 2018 -05-04
+
  */
 public class DecoderSMSMessageService {
     /*    *//**

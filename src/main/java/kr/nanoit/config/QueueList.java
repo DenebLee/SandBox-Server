@@ -31,5 +31,6 @@ public class QueueList{
     public QueueList() {
         queue_for_Send = new LinkedBlockingQueue<>();
         queue_for_Receive = new LinkedBlockingQueue<>();
+        queue_for_Report = new LinkedBlockingQueue<>();
     }
 }

@@ -17,8 +17,8 @@ import java.security.InvalidKeyException;
 public class Crypt {
 
     private kr.nanoit.config.Base64Coder Base64Coder = new Base64Coder();
-    private byte[] IV = new byte[]{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    private byte[] keyBytes = new byte[16];
+    private final byte[] IV = new byte[]{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    private final byte[] keyBytes = new byte[16];
 
     private IvParameterSpec ivSpec;
     private SecretKeySpec key;
@@ -30,16 +30,15 @@ public class Crypt {
 
     public void cryptInit(String enc) {
         try {
-            String Key = enc;
 
-            if (Key == null) {
+            if (enc == null) {
             } else {
-                int keySize = Key.getBytes().length;
+                int keySize = enc.getBytes().length;
 
                 if (keySize > 16)
                     keySize = 16;
 
-                System.arraycopy(Key.getBytes(), 0, keyBytes, 0, keySize);
+                System.arraycopy(enc.getBytes(), 0, keyBytes, 0, keySize);
 
                 //key 생성
                 key = new SecretKeySpec(keyBytes, "AES");

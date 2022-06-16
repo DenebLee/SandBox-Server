@@ -17,6 +17,8 @@ package kr.nanoit.config;
 
 //package biz.source_code.base64Coder;
 
+import java.util.Arrays;
+
 /**
  * A Base64 encoder/decoder.
  * This class is used to encode and decode data in Base64 format as described in RFC 1521.
@@ -42,7 +44,7 @@ public class Base64Coder {
     }
 
     static {
-        for (int i = 0; i < map2.length; i++) map2[i] = -1;
+        Arrays.fill(map2, (byte) -1);
         for (int i = 0; i < 64; i++) map2[map1[i]] = (byte) i;
     }
 

@@ -20,7 +20,6 @@ public class Validation {
             final Matcher matcher = patt.matcher((String) each.getValue());
             if (matcher.find()) {
                 return true;
-            }else{
             }
         }
         return false;

@@ -20,7 +20,7 @@ public class MakePacket {
      * destPos - 전송처 데이터내의 개시 위치
      * length - 카피되는 배열 요소의 수
      */
-    
+
     // Login_ACK 제작
     public byte[] login() {
         byte[] data = new byte[55];
@@ -45,15 +45,15 @@ public class MakePacket {
         Arrays.fill(data, 0, data.length, BYTE_SPACE);
         String bodySize = Integer.toString(data.length - IndexHeader.COMMON_INDEX_HEADER_FULL_LENGTH);
 
-        /**
-         * Header (packetType + bodyLength)
+        /*
+          Header (packetType + bodyLength)
          */
 
         System.arraycopy(PacketType.SEND_ACKNOWLEDGEMENT.getBytes(), 0, data, COMMON_LENGTH_HEADER_PACKET_TYPE_INDEX, PacketType.SEND_ACKNOWLEDGEMENT.getBytes().length);
         System.arraycopy(bodySize.getBytes(), 0, data, IndexHeader.COMMON_INDEX_HEADER_BODY_LEN, bodySize.getBytes().length);
 
-        /**
-         * Body (reusltCode + messageType + messageId)
+        /*
+          Body (reusltCode + messageType + messageId)
          */
 
         System.arraycopy(MessageType.SMS.getBytes(), 0, data, IndexSendAck.BIZ_INDEX_SEND_ACKNOWLEDGEMENT_MESSAGE_TYPE, MessageType.SMS.getBytes().length);
@@ -68,15 +68,15 @@ public class MakePacket {
         Arrays.fill(data, 0, data.length, BYTE_SPACE);
         String bodySize = Integer.toString(data.length - IndexHeader.COMMON_INDEX_HEADER_FULL_LENGTH);
 
-        /**
-         * Header (packetType + bodyLength)
+        /*
+          Header (packetType + bodyLength)
          */
 
         System.arraycopy(PacketType.REPORT.getBytes(), 0, data, COMMON_LENGTH_HEADER_PACKET_TYPE_INDEX, PacketType.REPORT.getBytes().length);
         System.arraycopy(bodySize.getBytes(), 0, data, IndexHeader.COMMON_INDEX_HEADER_BODY_LEN, bodySize.getBytes().length);
 
-        /**
-         * Body (resultCode + messageType + messageId + serverMessageid + sendTime + telecomId)
+        /*
+          Body (resultCode + messageType + messageId + serverMessageid + sendTime + telecomId)
          */
 
         System.arraycopy(smsMessageService.getTr_num().getBytes(), 0, data, IndexReport.INDEX_REPORT_RESULT_CODE, smsMessageService.getTr_num().getBytes().length);
@@ -87,7 +87,6 @@ public class MakePacket {
         System.arraycopy("KT".getBytes(), 0, data, IndexReport.INDEX_REPORT_TELCO_ID, "KT".getBytes().length);
         return data;
     }
-
 
 
     public static final byte BYTE_SPACE = ' ';

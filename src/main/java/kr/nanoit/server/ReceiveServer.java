@@ -24,21 +24,21 @@ import java.sql.Timestamp;
 @Slf4j
 public class ReceiveServer implements Runnable {
 
-    private QueueList queueList;
+    private final QueueList queueList;
     private final Socket socket;
-    private SocketUtil socketUtil;
-    private DecoderLogin decoderLogin;
-    private Crypt crypt;
-    private Login_Packet_UserInfo loginPacketUserInfo;
-    private DecoderSMSMessageService decoderSMSMessageService;
+    private final SocketUtil socketUtil;
+    private final DecoderLogin decoderLogin;
+    private final Crypt crypt;
+    private final Login_Packet_UserInfo loginPacketUserInfo;
+    private final DecoderSMSMessageService decoderSMSMessageService;
 
 
-    public ReceiveServer( Socket socket, QueueList queueList) throws IOException {
+    public ReceiveServer( Socket socket, QueueList queueList, Login_Packet_UserInfo loginPacketUserInfo) throws IOException {
 
         socketUtil = new SocketUtil(socket);
         decoderLogin = new DecoderLogin();
         crypt = new Crypt();
-        loginPacketUserInfo = new Login_Packet_UserInfo();
+        this.loginPacketUserInfo = loginPacketUserInfo;
         decoderSMSMessageService = new DecoderSMSMessageService();
 
         this.socket = socket;
@@ -62,7 +62,6 @@ public class ReceiveServer implements Runnable {
                     }
                 }
             }
-
         } catch (Exception e) {
             log.error("IOException occurred", e);
             socket.close();
@@ -91,7 +90,7 @@ public class ReceiveServer implements Runnable {
                 log.info("[응답] [로그인 실패] ID : {} PW : {} VERSION : {}", loginMessageService.getId(), loginMessageService.getPassword(), loginMessageService.getVersion());
             }
         } else {
-            log.info(String.format("[응답] [로그인 실패] ID : {} PW : {} VERSION : {}", loginMessageService.getId(), loginMessageService.getPassword(), loginMessageService.getVersion()));
+            log.info("[응답] [로그인 실패] ID : {} PW : {} VERSION : {}", loginMessageService.getId(), loginMessageService.getPassword(), loginMessageService.getVersion());
         }
         queueList.getQueue_for_Send().offer(loginMessageService); // 로그인에 대한 응답 sendQueue에 쌓기
     }

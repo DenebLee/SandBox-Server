@@ -6,7 +6,7 @@ public enum MessageType {
 
     NONE("NONE");
 
-    private String property;
+    private final String property;
 
     MessageType(String property) {
         this.property = property;

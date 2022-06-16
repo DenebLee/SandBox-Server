@@ -18,7 +18,7 @@ public enum PacketType {
 
     ALIVE_ACKNOWLEDGEMENT("ALIVE_ACK");
 
-    private String property;
+    private final String property;
 
     PacketType(String property) {
         this.property = property;
