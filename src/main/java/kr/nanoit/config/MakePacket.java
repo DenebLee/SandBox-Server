@@ -12,31 +12,7 @@ import java.util.Arrays;
 import static kr.nanoit.dto.messsage_Structure.LengthHeader.COMMON_LENGTH_HEADER_PACKET_TYPE_INDEX;
 
 public class MakePacket {
-    /**
-     * System.arraycopy Param
-     * src - 전송원 배열
-     * srcPos - 소스 배열의 개시 위치
-     * dest - 전송처 배열
-     * destPos - 전송처 데이터내의 개시 위치
-     * length - 카피되는 배열 요소의 수
-     */
-
-    // Login_ACK 제작
-    public byte[] login() {
-        byte[] data = new byte[55];
-        Arrays.fill(data, 0, data.length, BYTE_SPACE); // 배열 내 모든 값 초기화
-        System.arraycopy("LOGIN_ACK".getBytes(), 0, data, 0, "LOGIN_ACK".getBytes().length);
-        System.arraycopy("35".getBytes(), 0, data, 10, "35".getBytes().length);
-        System.arraycopy("0".getBytes(), 0, data, 20, "0".getBytes().length);
-        System.arraycopy("80".getBytes(), 0, data, 25, "80".getBytes().length);
-        System.arraycopy("50".getBytes(), 0, data, 30, "50".getBytes().length);
-        System.arraycopy("10".getBytes(), 0, data, 35, "10".getBytes().length);
-        System.arraycopy("80".getBytes(), 0, data, 40, "80".getBytes().length);
-        System.arraycopy("80".getBytes(), 0, data, 45, "80".getBytes().length);
-        System.arraycopy("80".getBytes(), 0, data, 50, "80".getBytes().length);
-
-        return data;
-    }
+    public static final byte BYTE_SPACE = ' ';
 
     // SEND_ACK 제작
     public static byte[] send_ack(SMSMessageService smsMessageService) {
@@ -59,6 +35,32 @@ public class MakePacket {
         System.arraycopy(MessageType.SMS.getBytes(), 0, data, IndexSendAck.BIZ_INDEX_SEND_ACKNOWLEDGEMENT_MESSAGE_TYPE, MessageType.SMS.getBytes().length);
         System.arraycopy(smsMessageService.getTr_num().getBytes(), 0, data, IndexSendAck.BIZ_INDEX_SEND_ACKNOWLEDGEMENT_MESSAGE_ID, smsMessageService.getTr_num().getBytes().length);
         System.arraycopy("0".getBytes(), 0, data, IndexSendAck.BIZ_INDEX_SEND_ACKNOWLEDGEMENT_RESULT_CODE, "0".getBytes().length);
+        return data;
+    }
+
+    /**
+     * System.arraycopy Param
+     * src - 전송원 배열
+     * srcPos - 소스 배열의 개시 위치
+     * dest - 전송처 배열
+     * destPos - 전송처 데이터내의 개시 위치
+     * length - 카피되는 배열 요소의 수
+     */
+
+    //  Login_ACK 제작
+    public byte[] login() {
+        byte[] data = new byte[55];
+        Arrays.fill(data, 0, data.length, BYTE_SPACE); // 배열 내 모든 값 초기화
+        System.arraycopy("LOGIN_ACK".getBytes(), 0, data, 0, "LOGIN_ACK".getBytes().length);
+        System.arraycopy("35".getBytes(), 0, data, 10, "35".getBytes().length);
+        System.arraycopy("0".getBytes(), 0, data, 20, "0".getBytes().length);
+        System.arraycopy("80".getBytes(), 0, data, 25, "80".getBytes().length);
+        System.arraycopy("50".getBytes(), 0, data, 30, "50".getBytes().length);
+        System.arraycopy("10".getBytes(), 0, data, 35, "10".getBytes().length);
+        System.arraycopy("80".getBytes(), 0, data, 40, "80".getBytes().length);
+        System.arraycopy("80".getBytes(), 0, data, 45, "80".getBytes().length);
+        System.arraycopy("80".getBytes(), 0, data, 50, "80".getBytes().length);
+
         return data;
     }
 
@@ -87,8 +89,5 @@ public class MakePacket {
         System.arraycopy("KT".getBytes(), 0, data, IndexReport.INDEX_REPORT_TELCO_ID, "KT".getBytes().length);
         return data;
     }
-
-
-    public static final byte BYTE_SPACE = ' ';
 
 }

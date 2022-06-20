@@ -24,3 +24,10 @@ public class IndexSendAck {
      */
     public static int BIZ_INDEX_SEND_ACKNOWLEDGEMENT_LENGTH = BIZ_INDEX_SEND_ACKNOWLEDGEMENT_MESSAGE_ID + LengthSendAck.BIZ_LENGTH_SEND_ACKNOWLEDGEMENT_MESSAGE_ID;
 }
+
+//    public void login_Ack_Receive() throws Exception {
+//        log.info("[HTTPCLIENT] Login SUCCESS! PACKET_TYPE : {} RESULT_CODE : {} SMS_TPS : {} LMS_TPS : {} MMS_TPS : {} KAT_TPS : {} KFT_TPS : {} GMS_TPS : {}",
+//                socketUtil.getPacketType(receiveByte), decodeLoginAck.resultCode(receiveByte), decodeLoginAck.smsTps(receiveByte), decodeLoginAck.lmsTps(receiveByte),
+//                decodeLoginAck.mmsTps(receiveByte), decodeLoginAck.katTps(receiveByte), decodeLoginAck.kftTps(receiveByte), decodeLoginAck.gmsTps(receiveByte));
+//    }
+//

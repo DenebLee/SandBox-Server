@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import kr.nanoit.config.Crypt;
 import kr.nanoit.config.XmlMaker;
-import kr.nanoit.main.Main;
+import kr.nanoit.main.SandBoxServer;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.BadPaddingException;
@@ -52,15 +52,15 @@ public class HttpServerHandler implements HttpHandler {
             Crypt crypt = new Crypt();
             try {
                 if (id != null && password != null) {
-                    if (Main.valificationMap.containsKey(id)) {
-                        crypt.cryptInit(Main.valificationMap.get(id).getEncryptKey());
+                    if (SandBoxServer.valificationMap.containsKey(id)) {
+                        crypt.cryptInit(SandBoxServer.valificationMap.get(id).getEncryptKey());
                         try {
                             password = new String(crypt.deCrypt(password));
                         } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
                             e.printStackTrace();
                         }
                     }
-                    if (password.equals(Main.valificationMap.get(id).getPassword())) {
+                    if (password.equals(SandBoxServer.valificationMap.get(id).getPassword())) {
                         log.info("REQUESTED PASSWORD IS CORRECT");
                         log.info("REQUESTED ID : [{}] , PASSWORD : [{}]" , id, password);
                         byte[] body = xmlMaker.XmlMake().getBytes(StandardCharsets.UTF_8);

@@ -25,7 +25,7 @@ import java.util.Map;
  * 서버는 socket Thread와 http용 Thread를 따로 두어 지속적인 요청을 받음
  */
 @Slf4j
-public class Main {
+public class SandBoxServer {
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd H:mm:ss");
     public static Configuration configuration;

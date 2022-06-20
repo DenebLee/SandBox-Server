@@ -6,7 +6,7 @@ import kr.nanoit.decoder.DecoderSMSMessageService;
 import kr.nanoit.dto.login.LoginMessageService;
 import kr.nanoit.dto.messsage_Structure.MessageType;
 import kr.nanoit.dto.messsage_Structure.SMSMessageService;
-import kr.nanoit.main.Main;
+import kr.nanoit.main.SandBoxServer;
 import kr.nanoit.socket.SocketUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -73,9 +73,9 @@ public class ReceiveServer implements Runnable {
         socketUtil.setPacket_login_version(loginMessageService.getVersion());
 
 
-        if (Main.valificationMap.containsKey(decoderLogin.id(receiveBytes))) {
-            crypt.cryptInit(Main.valificationMap.get(loginMessageService.getId()).getEncryptKey());
-            if (Main.valificationMap.get(decoderLogin.id(receiveBytes)).getPassword().contains(new String(crypt.deCrypt(decoderLogin.password(receiveBytes))))) {
+        if (SandBoxServer.valificationMap.containsKey(decoderLogin.id(receiveBytes))) {
+            crypt.cryptInit(SandBoxServer.valificationMap.get(loginMessageService.getId()).getEncryptKey());
+            if (SandBoxServer.valificationMap.get(decoderLogin.id(receiveBytes)).getPassword().contains(new String(crypt.deCrypt(decoderLogin.password(receiveBytes))))) {
                 log.info("[응답] [로그인 성공] ID : {} PW : {} VERSION : {}", loginMessageService.getId(), loginMessageService.getPassword(), loginMessageService.getVersion());
             } else {
                 log.info("[응답] [로그인 실패] ID : {} PW : {} VERSION : {}", loginMessageService.getId(), loginMessageService.getPassword(), loginMessageService.getVersion());
